@@ -1,0 +1,21 @@
+class Solution:
+    def findHighAccessEmployees(self, access_times: List[List[str]]) -> List[str]:
+        lookup=collections.defaultdict(list)
+        def c(x):
+            return int(x[:2])*60 + int(x[2:])
+        for name ,time in access_times:
+            lookup[name].append(c(time))
+
+        ans=[]
+        for key in lookup:
+            lookup[key].sort()
+
+            q=collections.deque()
+            for t in lookup[key]:
+                q.append(t)
+                while q[-1]-q[0]>=60:
+                    q.popleft()
+                if len(q)>=3:
+                    ans.append(key)
+                    break
+        return ans
